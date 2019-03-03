@@ -40,6 +40,7 @@ class Transaction(models.Model):
     type = models.CharField(max_length=1, choices=TYPE_CHOICES)
     amount = models.FloatField()
     description = models.CharField(max_length=500)
+    date = models.DateField()
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

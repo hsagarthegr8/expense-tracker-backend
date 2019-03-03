@@ -40,8 +40,6 @@ class User(AbstractBaseUser):
     email = models.EmailField(verbose_name='Email Address', max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    is_verified = models.BooleanField(default=False)
-    is_company = models.BooleanField(default=False)
     date_joined = models.DateField(auto_now_add=True)
 
     USERNAME_FIELD = 'username'
