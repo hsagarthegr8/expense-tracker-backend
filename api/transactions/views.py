@@ -8,7 +8,7 @@ class TransactionListView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Transaction.objects.filter(user=user).order_by('-date')
+        return Transaction.objects.filter(user=user).order_by('-date', '-timestamp')
 
 
 class TransactionCreateView(CreateAPIView):

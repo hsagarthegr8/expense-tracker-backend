@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class Wallet(models.Model):
     CATEGORY_CHOICES = (
         ('B', 'Bank Account'),
@@ -61,7 +62,7 @@ class Transaction(models.Model):
             self.wallet.add_money(self.amount)
         super().delete()
 
-    def update_wallet_or_amount(self, transaction_type, amount, wallet):
+    def update_wallet_balance_wrt_new_amount(self, transaction_type, amount, wallet):
         if self.wallet == wallet:
             if self.type == transaction_type:
                 if self.type == 'I':

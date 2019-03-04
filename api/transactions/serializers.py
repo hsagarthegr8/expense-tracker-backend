@@ -10,7 +10,6 @@ class TransactionSerializer(ModelSerializer):
 
     def create(self, validated_data):
         user = self.context.get('request').user
-
         transaction = Transaction(user=user, **validated_data)
         transaction.save()
         return transaction
@@ -19,6 +18,6 @@ class TransactionSerializer(ModelSerializer):
         amount = validated_data['amount']
         transaction_type = validated_data['type']
         wallet = validated_data['wallet']
-        instance.update_wallet_or_amount(transaction_type=transaction_type, amount=amount, wallet=wallet)
+        instance.update_wallet_balance_wrt_new_amount(transaction_type=transaction_type, amount=amount, wallet=wallet)
         return super().update(instance, validated_data)
 
