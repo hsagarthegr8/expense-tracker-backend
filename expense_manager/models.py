@@ -28,8 +28,6 @@ class Wallet(models.Model):
         self.save()
 
 
-
-
 class Transaction(models.Model):
     TYPE_CHOICES = (
         ('I', 'Income'),
@@ -49,11 +47,11 @@ class Transaction(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        if self.type == 'I':
-            self.wallet.add_money(self.amount)
-        else:
-            self.wallet.deduct_money(self.amount)
-
+        if self.pk:
+            if self.type == 'I':
+                self.wallet.add_money(self.amount)
+            else:
+                self.wallet.deduct_money(self.amount)
         super().save()
 
     def delete(self, using=None, keep_parents=False):
@@ -62,6 +60,33 @@ class Transaction(models.Model):
         else:
             self.wallet.add_money(self.amount)
         super().delete()
+
+    def update_wallet_or_amount(self, transaction_type, amount, wallet):
+        if self.wallet == wallet:
+            if self.type == transaction_type:
+                if self.type == 'I':
+                    self.wallet.add_money(amount - self.amount)
+                else:
+                    self.wallet.add_money(self.amount - amount)
+            else:
+                if self.type == 'I':
+                    self.wallet.deduct_money(self.amount + amount)
+                else:
+                    self.wallet.add_money(self.amount + amount)
+        else:
+            if self.type == 'I':
+                self.wallet.deduct_money(self.amount)
+            else:
+                self.wallet.add_money(self.amount)
+
+            if transaction_type == 'I':
+                wallet.add_money(amount)
+            else:
+                wallet.deduct_money(amount)
+            wallet.save()
+
+        self.wallet.save()
+
 
 
 

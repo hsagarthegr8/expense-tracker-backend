@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from .serializers import TransactionSerializer
 from expense_manager.models import Transaction
 
@@ -16,6 +16,14 @@ class TransactionCreateView(CreateAPIView):
 
 
 class TransactionDeleteView(DestroyAPIView):
+    serializer_class = TransactionSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Transaction.objects.filter(user=user)
+
+
+class TransactionUpdateView(UpdateAPIView):
     serializer_class = TransactionSerializer
 
     def get_queryset(self):

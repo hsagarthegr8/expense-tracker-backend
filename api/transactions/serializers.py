@@ -15,4 +15,10 @@ class TransactionSerializer(ModelSerializer):
         transaction.save()
         return transaction
 
+    def update(self, instance, validated_data):
+        amount = validated_data['amount']
+        transaction_type = validated_data['type']
+        wallet = validated_data['wallet']
+        instance.update_wallet_or_amount(transaction_type=transaction_type, amount=amount, wallet=wallet)
+        return super().update(instance, validated_data)
 
