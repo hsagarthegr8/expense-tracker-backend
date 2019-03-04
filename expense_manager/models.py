@@ -47,13 +47,21 @@ class Transaction(models.Model):
     def __str__(self):
         return f'{self.description} {self.amount} {self.type}'
 
-    def save(self):
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
         if self.type == 'I':
             self.wallet.add_money(self.amount)
         else:
             self.wallet.deduct_money(self.amount)
 
         super().save()
+
+    def delete(self, using=None, keep_parents=False):
+        if self.type == 'I':
+            self.wallet.deduct_money(self.amount)
+        else:
+            self.wallet.add_money(self.amount)
+        super().delete()
 
 
 
