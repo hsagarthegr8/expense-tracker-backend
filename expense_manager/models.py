@@ -21,10 +21,12 @@ class Wallet(models.Model):
         return self.name
 
     def add_money(self, money):
+        print("Hello ADD")
         self.balance += money
         self.save()
 
     def deduct_money(self, money):
+        print("deduct")
         self.balance -= money
         self.save()
 
@@ -48,7 +50,7 @@ class Transaction(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        if self.pk:
+        if not self.pk:
             if self.type == 'I':
                 self.wallet.add_money(self.amount)
             else:
@@ -56,6 +58,7 @@ class Transaction(models.Model):
         super().save()
 
     def delete(self, using=None, keep_parents=False):
+        print("Hello")
         if self.type == 'I':
             self.wallet.deduct_money(self.amount)
         else:
