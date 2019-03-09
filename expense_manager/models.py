@@ -21,12 +21,10 @@ class Wallet(models.Model):
         return self.name
 
     def add_money(self, money):
-        print("Hello ADD")
         self.balance += money
         self.save()
 
     def deduct_money(self, money):
-        print("deduct")
         self.balance -= money
         self.save()
 
