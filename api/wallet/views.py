@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from expense_manager.models import Wallet
 from .serializers import WalletSerializer
 
@@ -16,6 +16,14 @@ class WalletCreateView(CreateAPIView):
 
 
 class WalletUpdateView(UpdateAPIView):
+    serializer_class = WalletSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Wallet.objects.filter(user=user)
+
+
+class WalletDeleteView(DestroyAPIView):
     serializer_class = WalletSerializer
 
     def get_queryset(self):

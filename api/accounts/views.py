@@ -9,5 +9,6 @@ class AccountListView(ListAPIView):
 
 
 class AccountCreateView(CreateAPIView):
+    permission_classes = ''
     serializer_class = AccountSerializer
 
